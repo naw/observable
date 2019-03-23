@@ -12,7 +12,7 @@ To understand observables, observers, and operators, it is helpful first to thin
 
 ### What is an observable? ###
 
-Think of an observable as a function that takes a callback and emits a stream of values by calling the callback once for each value. The observable can emit values to the callback synchronously or asynchronously.
+Think of an observable as a _function_ that accepts a _callback function_ (e.g. as an argument) and _emits a stream of values_ by calling the callback function once for each value. The observable function can emit values to the callback function either synchronously or asynchronously.
 
 This observable emits four values:
 
@@ -58,7 +58,7 @@ helloObservable(print);
 
 <a target="_blank" href="//jsfiddle.net/gladtocode/joyjhLqg">Fiddle</a>
 
-In the above examples, I manually hardcoded strings, the actual values emitted could be anything you want, and could come from any source you want. For example, you could use DOM events as a source and indefinitely stream these to the callback function:
+In the above examples, I manually hardcoded strings, but the actual values emitted could be anything you want, and could come from any source you want. For example, you could use DOM events as a source and indefinitely stream these to the callback function:
 
 ```javascript
 const mousePositionObservable = (callback) => {
@@ -78,6 +78,8 @@ mousePositionObservable(print);
 
 ### What is an observer? ###
 
+To re-cap, the observ<b>able</b> is the function that _emits_ the stream of values. So what is the observ<b>er</b>?  It is the function that _receives_ the stream of values.
+
 The `callback` from the above examples is called an `observer`. The `callback` _is_ the `observer`. I only used the terminology `callback` so as not to introduce two new terms at the same time. The observer/callback is merely a function that takes a value and does something with it. Thus far, we have used `console.log` or `print` as our observer, but it could be any function that takes a single value and does something with it (although, of course it doesn't _have_ to actually do anything with it, if it chooses not to).
 
 Therefore, using the observer terminology, the first example would look like this:
@@ -93,7 +95,7 @@ const integerObservable = (observer) => {
 
 Perhaps, instead of logging each value, we an observer that `alert`'s each value:
 
-```
+```javascript
 integerObservable(alert);
 ```
 
@@ -159,7 +161,7 @@ When an operator decorates an observable, the resulting observable does not _hav
 
 For example, here is an operator that throws away all even integers:
 
-```
+```javascript
 const ignoreEvenOperator = (originalObservable) => {
   return (observer) => {
     originalObservable((originalValue) => {
